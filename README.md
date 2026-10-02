@@ -1,90 +1,53 @@
-Título → La Evolucion de la Felicidad
+# Qué factores se asocian a la felicidad de un país: PIB e infraestructura básica
 
-Objetivo del proyecto → Analizar la evolución de la felicidad a nivel mundial durante el periodo 2015-2024, identificando los principales cambios, tendencias y factores relacionados con el bienestar de las personas en diferentes países y regiones.
+## Objetivo
+Analizar si la riqueza (PIB per cápita) y el acceso a electricidad y agua
+se relacionan con el nivel de felicidad de los países, para identificar
+qué factores merece la pena priorizar en políticas de desarrollo.
 
-Contexto del negocio → Somos una asociacion derivada del banco mundial buscando crear un articulo sobre la evolucion de la felicidad entre los años 2015 y 2024
+## Contexto del negocio
+Un organismo de cooperación con el banco mundial que busca hacer un analisis sobre la poblacion que tiene una mayor persepcion de la felicidad
 
-La asociación busca comprender detalladamente por qué algunos países presentan mayores niveles de felicidad y cuáles son los principales factores que contribuyen al bienestar y la felicidad de sus habitantes.
+## Dataset
+- World Happiness Report (CSV): 140 países, ranking, happiness score,
+  apoyo social, libertad, generosidad y percepción de corrupción.
+- API del Banco Mundial (2024): PIB per cápita, acceso a electricidad
+  y acceso a agua.
+- Base de datos MySQL con 5 tablas: `pais`, `ranking`, `social`,
+  `pib_bm`, `infraestructura` (clave: `id_pais`).
 
-Dataset → Utilizamos 2 dataset y un API
+## Calidad del dato
+- 17 países sin código ISO tras el cruce de datos (nombres no coincidentes).
+- Argelia venía en español y con la región mal asignada.
+- La API incluye agregados (p. ej. "World") que no son países; se filtraron.
+- No todos los países tienen dato de 2024.
 
-Los datasets contienen informacion de 150 paises donde se observa el ranking y los demas factores que llevan a la conclusion de dicho ranking
+## Preguntas clave
+1. ¿Los países más ricos son los más felices?
+2. ¿El acceso a electricidad y agua se asocia con el happiness score?
+3. ¿Qué pesa más: lo económico o lo social (apoyo, libertad)?
 
-Para nuestro análisis seleccionamos cinco variables principales:
-"Ranking" 
-"Country" 
-"Happiness Score" 
-"GDP per capita"
-"Social support"
-"Healthy life expectancy"
-"Freedom to make life choices"
-"Generosity"
-"Perceptions of corruption"
+## Proceso de análisis
+Limpieza en Python (pandas), corrección de códigos, carga a MySQL con
+SQLAlchemy, consultas SQL con JOIN entre tablas y análisis exploratorio.
 
-Notas sobre calidad del dato → Durante la exploración inicial los dos datasets que utilizamos solo necesitaban unos pequeños arreglos. pero en la API que utilizamos los datos los limpiamos por que tenian muchos caracteres nulos
+## Resultados / Insights
+*Existe una relación entre desarrollo y felicidad. Las regiones con mayor desarrollo económico y social suelen ser también las que reportan mayor bienestar percibido.
+*El apoyo social es un factor clave. Acompaña de cerca a la felicidad, mientras que otros indicadores, como la percepción de corrupción, distinguen menos entre regiones.
+*El acceso a servicios básicos marca diferencias. Las regiones con menor acceso a electricidad y agua se encuentran entre las menos felices, y el acceso al agua es el déficit más extendido.
+*Las regiones no son homogéneas. Hay desigualdades importantes dentro de ellas, por lo que el promedio regional no basta para describir la situación de cada país.
+*Los extremos se concentran geográficamente. Los países más y menos felices pertenecen a muy pocas regiones, lo que refleja una fuerte desigualdad global.
 
-Preguntas clave → Nuestro análisis busca responder cuatro preguntas principales:
+## Recomendaciones
+Buscar analisar mas datos para tener un estudio mas robusto, buscar como la educacion o la salud.
 
-1. ¿Dónde se concentran los ataques de tiburón registrados?
-Hipótesis: Los ataques registrados se concentran en determinadas zonas geográficas.
-2. ¿Qué estaban haciendo las personas cuando ocurrió el ataque?
-Hipótesis: Determinadas actividades acuáticas aparecen con mayor frecuencia que otras.
-3. ¿Cómo han cambiado los ataques registrados a lo largo del tiempo?
-Hipótesis: Los ataques registrados muestran una mayor concentración en los periodos más recientes.
-4. ¿Varía la fatalidad según la localización?
-Hipótesis: La proporción de ataques mortales varía según la localización geográfica.
+## Limitaciones
+Correlación no es causalidad; un solo año; países sin dato;
+el score es autodeclarado y subjetivo.
 
-Proceso de análisis → El análisis se realizó en tres fases principales:
+## Próximos pasos
+Añadir series de varios años, más indicadores (salud, educación)
+y un dashboard.
 
-- Limpieza: tratamiento de valores nulos, formatos inconsistentes y estandarización de las variables seleccionadas mediante funciones en "cleaning.py".
-- Análisis Exploratorio de Datos (EDA): agrupaciones, conteos y visualizaciones para analizar patrones geográficos, actividades, evolución temporal y fatalidad.
-- Métricas clave: número de ataques por localización y actividad, promedio de ataques por año y tasa de fatalidad global y por localización.
-
-Finalmente, los resultados obtenidos se utilizaron para contrastar las hipótesis planteadas.
-
-Resultados e insights →
-- Concentración geográfica: Florida destaca con 1.200 ataques registrados, seguida por varias regiones de Australia y Estados Unidos.
-- Actividad: "surfing" es la actividad más frecuente y ocupa el primer lugar en 4 de las 5 zonas con más ataques registrados.
-- Evolución temporal: Los datos muestran una tendencia general de aumento de los ataques registrados a lo largo del tiempo
-- Fatalidad: El 23,1 % de los casos con desenlace conocido fueron mortales y la tasa de fatalidad presenta diferencias importantes según la localización.
-
-En conjunto, los resultados apoyan las hipótesis planteadas y muestran que una mayor frecuencia de ataques registrados no implica necesariamente una mayor fatalidad.
-
-Recomendaciones de negocio → A partir de los resultados obtenidos, las campañas de concienciación podrían priorizar las regiones con una elevada concentración de incidentes registrados, especialmente Florida y determinadas regiones de Australia.
-
-También podría ser útil desarrollar campañas específicas dirigidas a actividades que aparecen frecuentemente asociadas a los ataques registrados, especialmente "surfing" y "swimming".
-
-Sin embargo, el número de ataques registrados no debe interpretarse directamente como una medida del riesgo real. Para tomar decisiones basadas en riesgo sería necesario incorporar información adicional sobre la exposición de las personas al mar.
-
-En una siguiente fase sería útil analizar el perfil de las personas afectadas para identificar qué grupos aparecen con mayor frecuencia en los registros y orientar mejor las campañas de prevención y su comunicación.
-
-Limitaciones → La principal limitación del proyecto es que el dataset contiene información sobre ataques registrados, pero no incluye datos suficientes para calcular el riesgo real de sufrir un ataque.
-
-Por ejemplo, desconocemos:
-
-- El número de bañistas de cada región.
-- El número de surfistas.
-- El tiempo de exposición al agua.
-- El volumen de turismo.
-- La frecuencia con la que se practica cada actividad.
-- Si los registros históricos tienen el mismo nivel de cobertura que los actuales.
-
-Por este motivo: Más ataques registrados no es igual a un mayor riesgo individual.
-
-Además, el aumento de ataques registrados a lo largo del tiempo podría estar influido por mejoras en los sistemas de registro y recopilación de información.
-
-Las tasas de fatalidad también pueden resultar poco representativas cuando existen pocos casos. Por este motivo, para el análisis geográfico de fatalidad utilizamos únicamente localizaciones con al menos 20 ataques con desenlace conocido.
-
-Próximos pasos → Si dispusiéramos de más tiempo y datos, podríamos ampliar el proyecto mediante:
-
-- Datos de turismo y afluencia a las playas
-- Número estimado de personas expuestas al mar
-- Analizar el perfil de las personas afectadas
-- Relación entre actividad y fatalidad
-- Comparación de patrones entre diferentes periodos históricos
-- Creación de un mapa interactivo
-- Desarrollo de un dashboard para explorar los resultados
-
-Cómo replicar el proyecto → El proyecto puede replicarse utilizando el dataset original y ejecutando el código de análisis incluido en el repositorio.
-Las funciones utilizadas para la limpieza y estandarización de los datos se encuentran en "cleaning.py". 
-Entre las tecnologías utilizadas:  Python, Pandas, Matplotlib, Jupyter Notebook.
+## Cómo replicar
+Enlace al repositorio: `cleaning.py`, notebook y script SQL del esquema.
